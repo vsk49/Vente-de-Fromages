@@ -8,7 +8,6 @@
 - [Installation](#installation)
 - [Utilisation](#utilisation)
 - [Contribuer](#contribuer)
-- [Licence](#licence)
 
 ## Aperçu
 Vente-de-Fromages est une application développée en Java pour faciliter la vente de fromages en ligne. Elle permet aux utilisateurs de parcourir différents types de fromages, de les ajouter à leur panier et de finaliser leurs achats.
@@ -57,6 +56,3 @@ Les contributions sont les bienvenues ! Pour contribuer, veuillez suivre ces ét
 4. Commitez vos changements (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`).
 5. Poussez à la branche (`git push origin feature/nom_de_la_fonctionnalité`).
 6. Créez une Pull Request.
-
-## Licence
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
