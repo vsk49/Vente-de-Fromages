@@ -29,7 +29,7 @@ public class GenerationFromages {
 	}
 
 	private static List<Fromage> GenerationFromageBrebis() {
-		List<Fromage> fromagesAuLaitDeBrebis = new LinkedList<Fromage>();
+		List<Fromage> fromagesAuLaitDeBrebis = new LinkedList<>();
 		SaisieFromage[] fromages = { new SaisieFromage("Brebis au Bleu",
 		        "brebis_au_bleu",
 		        "Le brebis au bleu a une pâte très fondante, onctueuse fine et non friable. "
@@ -171,7 +171,7 @@ public class GenerationFromages {
 	}
 
 	private static List<Fromage> GenerationFromageChèvre() {
-		List<Fromage> fromagesAuLaitDeChèvre = new LinkedList<Fromage>();
+		List<Fromage> fromagesAuLaitDeChèvre = new LinkedList<>();
 		SaisieFromage[] fromages = { new SaisieFromage(
 		        "Bouton de Culotte fermier", "bouton_de_culotte_fermier",
 		        "Au lait cru de chèvre, ce petit fromage présentera une croûte de couleur jaune pâle qui deviendra brunâtre en s’affinant, "
@@ -348,7 +348,7 @@ public class GenerationFromages {
 	}
 
 	private static List<Fromage> GenerationFromageVache() {
-		List<Fromage> fromagesAuLaitDeVache = new LinkedList<Fromage>();
+		List<Fromage> fromagesAuLaitDeVache = new LinkedList<>();
 		SaisieFromage[] fromages = { new SaisieFromage("Abondance", "abondance",
 		        "De fabrication fermière, et d'un affinage de 10 semaines en caves avec des soins de frottage, cette tomme dégage une odeur de cave et offre "
 		                + "un fondant en bouche développant un goût de noisette. Ce fromage au lait cru de vache se présente sous la forme d’une meule recouverte "

@@ -7,9 +7,6 @@ import javax.swing.border.TitledBorder;
 public class FEN_Imprimer extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldCopies;
-    private JTextField textField;
-    private JTextField textField_1;
 
     public FEN_Imprimer() {
         setTitle("Imprimer");
@@ -84,15 +81,15 @@ public class FEN_Imprimer extends JFrame {
         
         JRadioButton rdbtnPages = new JRadioButton("Pages");
         panel_1.add(rdbtnPages);
-        
-        textField = new JTextField();
+
+        JTextField textField = new JTextField();
         panel_1.add(textField);
         textField.setColumns(10);
         
         JLabel lblNewLabel = new JLabel("A");
         panel_1.add(lblNewLabel);
-        
-        textField_1 = new JTextField();
+
+        JTextField textField_1 = new JTextField();
         panel_1.add(textField_1);
         textField_1.setColumns(10);
 
@@ -102,7 +99,7 @@ public class FEN_Imprimer extends JFrame {
 
         JPanel copiesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         copiesPanel.add(new JLabel("Nombre de copies :"));
-        textFieldCopies = new JTextField("1", 5);
+        JTextField textFieldCopies = new JTextField("1", 5);
         copiesPanel.add(textFieldCopies);
         panelCopies.add(copiesPanel);
 
@@ -132,7 +129,7 @@ public class FEN_Imprimer extends JFrame {
                 FEN_Imprimer frame = new FEN_Imprimer();
                 frame.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Erreur lors de l'ouverture de la fenêtre");
             }
         });
     }

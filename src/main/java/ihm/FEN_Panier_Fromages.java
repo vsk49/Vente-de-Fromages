@@ -20,8 +20,7 @@ import java.awt.Component;
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.util.Objects;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -33,8 +32,7 @@ import modele.Article;
 public class FEN_Panier_Fromages extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textFieldSousTotal;
+    private JTextField textFieldSousTotal;
 	private JTextField textFieldExpedition;
 	private JTextField textFieldTotal;
 	private DefaultTableModel tableModel;
@@ -42,26 +40,22 @@ public class FEN_Panier_Fromages extends JFrame {
 	private FEN_Nos_Fromages fenAccueil;
 	private JTable tablePanier;
 	private JComboBox<String> comboBoxColis;
-	private FEN_Facture fenFacture;
-	private FEN_Coordonnées fenInfo;
-	private JScrollPane scrollPane;
-	private JButton boutonVider;
+    private FEN_Coordonnées fenInfo;
+    private JButton boutonVider;
 	private JButton boutonRetour;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FEN_Panier_Fromages frame = new FEN_Panier_Fromages(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                FEN_Panier_Fromages frame = new FEN_Panier_Fromages(null);
+                frame.setVisible(true);
+            } catch (Exception e) {
+                System.out.println("Erreur lors de l'ouverture de la fenêtre");
+            }
+        });
 	}
 
 	/**
@@ -71,11 +65,10 @@ public class FEN_Panier_Fromages extends JFrame {
 
 		this.fenAccueil = fenAccueil;
 		this.fenInfo = new FEN_Coordonnées(this);
-		this.fenFacture = new FEN_Facture(this.fenInfo, this);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 571, 637);
-		contentPane = new JPanel();
+        JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -92,7 +85,7 @@ public class FEN_Panier_Fromages extends JFrame {
 		JButton boutonCalcul = new JButton("Recalculer le panier");
 		panelNord.add(boutonCalcul, BorderLayout.EAST);
 
-		scrollPane = new JScrollPane();
+        JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
 		tablePanier = new JTable() {
@@ -240,19 +233,17 @@ public class FEN_Panier_Fromages extends JFrame {
 	}
 
 	public void viderPanier(JButton boutonVider) {
-		boutonVider.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel tableModel = (DefaultTableModel) tablePanier.getModel();
-				tableModel.setRowCount(0);
-				mettreAJourTotalPanier();
-			}
-		});
+		boutonVider.addActionListener(e -> {
+            DefaultTableModel tableModel = (DefaultTableModel) tablePanier.getModel();
+            tableModel.setRowCount(0);
+            mettreAJourTotalPanier();
+        });
 	}
 
 	private void continuerLesAchats(FEN_Nos_Fromages fenAccueil, JButton boutonRetour) {
-		boutonRetour.addActionListener(e -> {
-			boolean success = true;
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
+        this.fenAccueil = fenAccueil;
+        boutonRetour.addActionListener(e -> {
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
 				String articleKey = (String) tableModel.getValueAt(i, 0);
 				int quantite = (Integer) tableModel.getValueAt(i, 2);
 				float prix = (Float) tableModel.getValueAt(i, 1);
@@ -264,16 +255,12 @@ public class FEN_Panier_Fromages extends JFrame {
 				}
 			}
 
-			if (success) {
-				mettreAJourTotalPanier();
-				dispose(); // Fermez la fenêtre seulement si la mise à jour du stock est réussie
-				if (fenDescription != null) {
-					fenDescription.dispose();
-				}
-			} else {
-				JOptionPane.showMessageDialog(this, "Erreur lors de la mise à jour du stock.", "Erreur", JOptionPane.ERROR_MESSAGE);
-			}
-		});
+            mettreAJourTotalPanier();
+            dispose(); // Fermez la fenêtre seulement si la mise à jour du stock est réussie
+            if (fenDescription != null) {
+                fenDescription.dispose();
+            }
+        });
 	}
 
 	private void updateArticleQuantite(int row, String articleKey, int nouvelleQuantite, float prix) {
@@ -310,11 +297,7 @@ public class FEN_Panier_Fromages extends JFrame {
 	}
 
 	private void recalculerPanier(JButton boutonCalcul) {
-		boutonCalcul.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mettreAJourTotalPanier();
-			}
-		});
+		boutonCalcul.addActionListener(e -> mettreAJourTotalPanier());
 	}
 
 	private void modifierPrixTotal() {
@@ -322,16 +305,14 @@ public class FEN_Panier_Fromages extends JFrame {
 	}
 
 	private void ouvrirFicheClient(JButton boutonValider) {
-		boutonValider.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (estPanierVide()) {
-					JOptionPane.showMessageDialog(null, "Votre panier est vide! ", "Erreur", JOptionPane.ERROR_MESSAGE);
-				} else {
-					FEN_Coordonnées fen = fenInfo;
-					fen.setVisible(true);
-				}
-			}
-		});
+		boutonValider.addActionListener(e -> {
+            if (estPanierVide()) {
+                JOptionPane.showMessageDialog(null, "Votre panier est vide! ", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } else {
+                FEN_Coordonnées fen = fenInfo;
+                fen.setVisible(true);
+            }
+        });
 	}
 
 	public void ajouterAuPanier(String articleKey, float prix, int quantite, float total) {
@@ -380,7 +361,7 @@ public class FEN_Panier_Fromages extends JFrame {
 
 	private void mettreAJourTotalPanier() {
 		float sousTotal = getPrixTotal();
-		float fraisExpedition = calculerFraisDePort(sousTotal, (String) comboBoxColis.getSelectedItem());
+		float fraisExpedition = calculerFraisDePort(sousTotal, (String) Objects.requireNonNull(comboBoxColis.getSelectedItem()));
 		float total = sousTotal + fraisExpedition;
 
 		textFieldSousTotal.setText(String.format("%.2f€", sousTotal));
@@ -392,7 +373,7 @@ public class FEN_Panier_Fromages extends JFrame {
 
 	private void updateFraisExpedition() {
 	    float sousTotal = getPrixTotal();
-	    float fraisExpedition = calculerFraisDePort(sousTotal, (String) comboBoxColis.getSelectedItem());
+	    float fraisExpedition = calculerFraisDePort(sousTotal, (String) Objects.requireNonNull(comboBoxColis.getSelectedItem()));
 	    textFieldExpedition.setText(String.format("%.2f€", fraisExpedition));
 	    mettreAJourTotalPanier(); // Ensure this is called to reflect the new total including shipping.
 	}
@@ -464,10 +445,6 @@ public class FEN_Panier_Fromages extends JFrame {
 			return new String[] { sousTotal, fraisLivraison, prixTotal };
 		}
 
-	}
-
-	public FEN_Facture getFenFacture() {
-		return this.fenFacture;
 	}
 
 	public boolean estPanierVide() {

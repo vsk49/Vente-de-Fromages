@@ -17,7 +17,7 @@ public class TestPanier {
 	private Fromage unFromage;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.infoFromage = new SaisieFromage("Brie de Melun", "brie_de_melun",
 				"Plus petit que son grand frère «le Brie de Meaux», il a cependant plus de caractère. Ce fromage au lait cru de vache vous offrira une pâte "
 						+ "souple de couleur jaune d’or à l’intérieur, et une croûte fleurie blanche parsemée de stries ou de taches rouges ou brunes à l’extérieur. "
@@ -30,7 +30,7 @@ public class TestPanier {
 	}
 	
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		this.infoFromage = null;
 		this.unFromage = null;
 	}
@@ -41,7 +41,7 @@ public class TestPanier {
 		FEN_Panier_Fromages fenPanier = new FEN_Panier_Fromages(fenetreFromages);
 		fenPanier.ajouterAuPanier(this.unFromage.getDésignation() + " - " + 
 				this.unFromage.getArticles().get(0).getClé(), 0, 0, 0);
-		assertTrue(fenPanier.getTable().getRowCount() == 1);
+        assertEquals(1, fenPanier.getTable().getRowCount());
 	}
 	
 	@Test

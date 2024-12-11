@@ -19,8 +19,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JOptionPane;
@@ -29,7 +27,6 @@ import javax.swing.ButtonGroup;
 public class FEN_Coordonnées extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
     private JTextField textFieldNom;
     private JTextField textFieldPrenom;
     private JTextField textFieldAdresse1;
@@ -38,23 +35,18 @@ public class FEN_Coordonnées extends JFrame {
     private JTextField textFieldVille;
     private JTextField textFieldTelephone;
     private JTextField textFieldMail;
-    private final ButtonGroup paymentGroup = new ButtonGroup();
-    private final ButtonGroup newsletterGroup = new ButtonGroup();
-    private FEN_Panier_Fromages fenPanier;
     private FEN_Facture fenFacture;
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    FEN_Coordonnées frame = new FEN_Coordonnées(null);
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                FEN_Coordonnées frame = new FEN_Coordonnées(null);
+                frame.setVisible(true);
+            } catch (Exception e) {
+                System.out.println("Erreur lors de l'ouverture de la fenêtre");
             }
         });
     }
@@ -63,13 +55,12 @@ public class FEN_Coordonnées extends JFrame {
      * Create the frame.
      */
     public FEN_Coordonnées(FEN_Panier_Fromages fenPanier) {
-    	
-    	this.fenPanier = fenPanier;
-    	this.fenFacture = new FEN_Facture(this, fenPanier);
+
+        this.fenFacture = new FEN_Facture();
     	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 612, 568);
-        contentPane = new JPanel();
+        JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(0, 0));
@@ -216,6 +207,7 @@ public class FEN_Coordonnées extends JFrame {
         panelSud.add(panelPayment, BorderLayout.NORTH);
 
         JRadioButton rdbtnCarteCredit = new JRadioButton("Carte de crédit");
+        ButtonGroup paymentGroup = new ButtonGroup();
         paymentGroup.add(rdbtnCarteCredit);
         rdbtnCarteCredit.setFont(new Font("Arial", Font.BOLD, 13));
         panelPayment.add(rdbtnCarteCredit);
@@ -232,10 +224,11 @@ public class FEN_Coordonnées extends JFrame {
 
         JPanel panelNewsletter = new JPanel();
         panelNewsletter.setFont(new Font("Alef", Font.BOLD, 14));
-        panelNewsletter.setBorder(new TitledBorder(new LineBorder(new Color(255, 153, 0), 3), "Abonnement \u00E0 notre NewsLetter", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 153, 51)));
+        panelNewsletter.setBorder(new TitledBorder(new LineBorder(new Color(255, 153, 0), 3), "Abonnement à notre NewsLetter", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 153, 51)));
         panelSud.add(panelNewsletter, BorderLayout.CENTER);
 
         JRadioButton rdbtnOui = new JRadioButton("Oui");
+        ButtonGroup newsletterGroup = new ButtonGroup();
         newsletterGroup.add(rdbtnOui);
         rdbtnOui.setFont(new Font("Arial", Font.BOLD, 13));
         panelNewsletter.add(rdbtnOui);
@@ -265,31 +258,25 @@ public class FEN_Coordonnées extends JFrame {
     }
 
 	private void fermerFicheClient(JButton btnAnnuler) {
-		btnAnnuler.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+		btnAnnuler.addActionListener(e -> dispose());
 	}
 
 	private void ouvrirFacture(FEN_Panier_Fromages fenPanier, JButton btnOk) {
-		btnOk.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (validerChamps()) {
-                	String nomPrenom = textFieldNom.getText() + " " + textFieldPrenom.getText();
-                	String adresse = "Adresse : " + textFieldAdresse1.getText() + ", " +  
-                			textFieldAdresse2.getText() + ", " + textFieldCodePostal.getText()
-                			+ ", " + textFieldVille.getText();
-                	String telephone = "Téléphone : " + textFieldTelephone.getText();
-                	String mail = "Mail : " + textFieldMail.getText();
-                    JOptionPane.showMessageDialog(null, "Informations enregistrées avec succès !");
-                    fenFacture.setVisible(true);
-                    fenFacture.afficherInformationsPersonnelles(nomPrenom, adresse, telephone, mail);
-                    fenFacture.afficherArticles(fenPanier.getTable());
-                    fenFacture.afficherPrixTotal(fenPanier.getPrixPanier());
-                } else {
-                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs obligatoires.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                }
+		btnOk.addActionListener(e -> {
+            if (validerChamps()) {
+                String nomPrenom = textFieldNom.getText() + " " + textFieldPrenom.getText();
+                String adresse = "Adresse : " + textFieldAdresse1.getText() + ", " +
+                        textFieldAdresse2.getText() + ", " + textFieldCodePostal.getText()
+                        + ", " + textFieldVille.getText();
+                String telephone = "Téléphone : " + textFieldTelephone.getText();
+                String mail = "Mail : " + textFieldMail.getText();
+                JOptionPane.showMessageDialog(null, "Informations enregistrées avec succès !");
+                fenFacture.setVisible(true);
+                fenFacture.afficherInformationsPersonnelles(nomPrenom, adresse, telephone, mail);
+                fenFacture.afficherArticles(fenPanier.getTable());
+                fenFacture.afficherPrixTotal(fenPanier.getPrixPanier());
+            } else {
+                JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs obligatoires.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 	}
@@ -300,9 +287,5 @@ public class FEN_Coordonnées extends JFrame {
                !textFieldVille.getText().isEmpty() && !textFieldTelephone.getText().isEmpty() &&
                !textFieldMail.getText().isEmpty();
     }
-    
-    public FEN_Panier_Fromages getPanierClient() {
-    	return this.fenPanier;
-    }
-    
+
 }

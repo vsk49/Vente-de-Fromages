@@ -15,16 +15,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class FEN_Facture extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private FEN_Panier_Fromages fenPanier;
-	private FEN_Coordonnées fenInfo;
-	private JLabel lbl_prenom_nom;
+    private JLabel lbl_prenom_nom;
 	private JLabel lbl_adresse;
 	private JLabel lbl_téléphone;
 	private JLabel lbl_mail;
@@ -38,29 +33,23 @@ public class FEN_Facture extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FEN_Facture frame = new FEN_Facture(null, null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                FEN_Facture frame = new FEN_Facture();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                System.out.println("Erreur lors de l'ouverture de la fenêtre");
+            }
+        });
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public FEN_Facture(FEN_Coordonnées fenInfo, FEN_Panier_Fromages fenPanier) {
-
-		this.fenInfo = fenInfo;
-		this.fenPanier = fenPanier;
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public FEN_Facture() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 638);
-		contentPane = new JPanel(new BorderLayout(5, 5));
+        JPanel contentPane = new JPanel(new BorderLayout(5, 5));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
@@ -110,12 +99,10 @@ public class FEN_Facture extends JFrame {
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton btnImprimer = new JButton("Imprimer");
-		btnImprimer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fenImprimer = new FEN_Imprimer();
-				fenImprimer.setVisible(true);
-			}
-		});
+		btnImprimer.addActionListener(e -> {
+            fenImprimer = new FEN_Imprimer();
+            fenImprimer.setVisible(true);
+        });
 		JButton btnQuitter = new JButton("Quitter");
 		buttonPanel.add(btnImprimer);
 		buttonPanel.add(btnQuitter);
@@ -151,15 +138,7 @@ public class FEN_Facture extends JFrame {
 		this.labelFraisLivraison.setText("Frais de Livraison : " + informations[1]);
 		this.labelPrixTotal.setText("Total TTC : " + informations[2]);
 	}
-	
-	public FEN_Coordonnées getFicheClient() {
-		return this.fenInfo;
-	}
-	
-	public FEN_Panier_Fromages getPanierDeLaFacture() {
-		return this.fenPanier;
-	}
-	
+
 	public JTable getTableFacture() {
 		return this.table;
 	}
@@ -175,5 +154,5 @@ public class FEN_Facture extends JFrame {
 	public String getTotalTTC() {
 		return this.labelPrixTotal.getText();
 	}
-	
+
 }

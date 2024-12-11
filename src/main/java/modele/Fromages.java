@@ -9,7 +9,7 @@ public class Fromages {
 	private List<Fromage> fromages;
 
 	public Fromages() {
-		this.fromages = new LinkedList<Fromage>();
+		this.fromages = new LinkedList<>();
 	}
 
 	public void addFromages(List<Fromage> fromages) {
@@ -17,12 +17,12 @@ public class Fromages {
 	}
 
 	public String toStringFromagesEtArticles() {
-		StringBuffer enForme = new StringBuffer();
+		StringBuilder enForme = new StringBuilder();
 		for (Fromage f : this.fromages) {
-			enForme.append(f.toString() + '\n');
+			enForme.append(f.toString()).append('\n');
 			if (f.nombreArticles() > 0) {
 				for (Article article : f.getArticles()) {
-					enForme.append(article.toString() + '\n');
+					enForme.append(article.toString()).append('\n');
 				}
 			}
 		}
@@ -30,11 +30,11 @@ public class Fromages {
 	}
 
 	public String toStringArticlesEtStock() {
-		StringBuffer enForme = new StringBuffer();
+		StringBuilder enForme = new StringBuilder();
 		for (Fromage f : this.fromages) {
 			if (f.nombreArticles() > 0) {
 				for (Article article : f.getArticles()) {
-					enForme.append(article.toStringAvecStock() + '\n');
+					enForme.append(article.toStringAvecStock()).append('\n');
 				}
 			}
 		}
@@ -56,15 +56,6 @@ public class Fromages {
 		return this.fromages;
 	}
 
-	public Fromage getFromage(String désignation) {
-		for (Fromage f : this.fromages) {
-			if (f.getDésignation().equals(désignation)) {
-				return f;
-			}
-		}
-		return null;
-	}
-
 	public void regénérationDuStock() {
 		for (Fromage f : this.fromages) {
 			if (f.nombreArticles() > 0) {
@@ -77,18 +68,16 @@ public class Fromages {
 	}
 
 	public String vérificationSaisie() {
-		StringBuffer enForme = new StringBuffer();
+		StringBuilder enForme = new StringBuilder();
 		for (Fromage f : this.fromages) {
 			if (f.nombreArticles() == 0) {
-				enForme.append("Pas d'articles pour " + f.toString() + '\n');
+				enForme.append("Pas d'articles pour ").append(f).append('\n');
 			}
 			if (f.getDescription() == null) {
-				enForme.append(
-				        "Pas de description pour " + f.toString() + '\n');
+				enForme.append("Pas de description pour ").append(f).append('\n');
 			}
 			if (f.getNomImage() == null) {
-				enForme.append(
-				        "Pas de nom d'image pour " + f.toString() + '\n');
+				enForme.append("Pas de nom d'image pour ").append(f).append('\n');
 			}
 		}
 		return enForme.toString();
@@ -105,14 +94,6 @@ public class Fromages {
 			}
 		}
 		return null;
-	}
-	
-	public void updateStock(String designation, String articleCle, int quantitySold) {
-	    Article article = getArticle(designation, articleCle);
-	    if (article != null) {
-	        int currentStock = article.getQuantitéEnStock();
-	        article.setQuantitéEnStock(currentStock - quantitySold);  // Réduction du stock
-	    }
 	}
 
 }

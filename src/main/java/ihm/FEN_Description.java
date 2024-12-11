@@ -20,20 +20,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.SpinnerNumberModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class FEN_Description extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private FEN_Panier_Fromages fenPanier;
-	private FEN_Nos_Fromages fenAccueil;
-	private Fromage f;
-	private List<Article> articlesFromage;
-	private JLabel labelNomFromage;
-	private JLabel labelImage;
+    private List<Article> articlesFromage;
+    private JLabel labelImage;
 
 	/**
 	 * Launch the application.
@@ -41,10 +34,11 @@ public class FEN_Description extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				FEN_Description frame = new FEN_Description(null, null, null);
+                // noinspection DataFlowIssue
+                FEN_Description frame = new FEN_Description(null, null);
 				frame.setVisible(true);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("Erreur lors de l'ouverture de la fenêtre");
 			}
 		});
 	}
@@ -52,17 +46,13 @@ public class FEN_Description extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FEN_Description(Fromage f, FEN_Panier_Fromages fenPanier, FEN_Nos_Fromages fenAccueil) {
+	public FEN_Description(Fromage f, FEN_Panier_Fromages fenPanier) {
 
-		this.f = f;
-		this.fenPanier = fenPanier;
-		this.fenAccueil = fenAccueil;
+        this.articlesFromage = f.getArticles();
 
-		this.articlesFromage = f.getArticles();
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 623, 445);
-		contentPane = new JPanel();
+        JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -75,7 +65,7 @@ public class FEN_Description extends JFrame {
 		panelContenu.add(panelImage);
 		panelImage.setLayout(new BorderLayout(0, 0));
 
-		labelNomFromage = new JLabel(f.getDésignation());
+        JLabel labelNomFromage = new JLabel(f.getDésignation());
 		labelNomFromage.setHorizontalAlignment(SwingConstants.CENTER);
 		labelNomFromage.setFont(new Font("Segoe Script", Font.BOLD, 20));
 		labelNomFromage.setVerticalAlignment(SwingConstants.TOP);
@@ -131,38 +121,36 @@ public class FEN_Description extends JFrame {
 
 	private void ajouterLigneDeCommande(Fromage f, FEN_Panier_Fromages fenPanier, JComboBox<String> comboBoxTypeVente,
 			JSpinner spinnerStock, JButton boutonAjouterAuPanier) {
-		boutonAjouterAuPanier.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String articleSelectionne = (String) comboBoxTypeVente.getSelectedItem();
-				int quantite = (int) spinnerStock.getValue();
-				float prix = 0;
-				String cleArticle = "";
-				for (Article a : articlesFromage) {
-					if (articleSelectionne.contains(a.getClé())) {
-						prix = a.getPrixTTC();
-						cleArticle = a.getClé();
-					}
-				}
-				float total = prix * quantite;
-				fenPanier.ajouterAuPanier(f.getDésignation() + " - " + cleArticle, prix, quantite, total);
-				fenPanier.setFEN_Description(FEN_Description.this);
-				fenPanier.setVisible(true);
-			}
-		});
+		boutonAjouterAuPanier.addActionListener(e -> {
+            String articleSelectionne = (String) comboBoxTypeVente.getSelectedItem();
+            int quantite = (int) spinnerStock.getValue();
+            float prix = 0;
+            String cleArticle = "";
+            for (Article a : articlesFromage) {
+assert articleSelectionne != null;
+if (articleSelectionne.contains(a.getClé())) {
+                    prix = a.getPrixTTC();
+                    cleArticle = a.getClé();
+                }
+            }
+            float total = prix * quantite;
+            fenPanier.ajouterAuPanier(f.getDésignation() + " - " + cleArticle, prix, quantite, total);
+            fenPanier.setFEN_Description(FEN_Description.this);
+            fenPanier.setVisible(true);
+        });
 	}
 
 	private void configurerQuantiteEnStock(JComboBox<String> comboBoxTypeVente, JSpinner spinnerStock) {
-		comboBoxTypeVente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String articleSelectionne = (String) comboBoxTypeVente.getSelectedItem();
-				for (Article a : articlesFromage) {
-					if (articleSelectionne.contains(a.getClé())) {
-						spinnerStock.setModel(new SpinnerNumberModel(0, 0, a.getQuantitéEnStock(), 1));
-						break;
-					}
-				}
-			}
-		});
+		comboBoxTypeVente.addActionListener(e -> {
+            String articleSelectionne = (String) comboBoxTypeVente.getSelectedItem();
+            for (Article a : articlesFromage) {
+assert articleSelectionne != null;
+if (articleSelectionne.contains(a.getClé())) {
+                    spinnerStock.setModel(new SpinnerNumberModel(0, 0, a.getQuantitéEnStock(), 1));
+                    break;
+                }
+            }
+        });
 	}
 
 	private void fixerTypeArticles(JComboBox<String> comboBoxTypeVente) {
@@ -176,29 +164,13 @@ public class FEN_Description extends JFrame {
 	}
 
 	private void revenirALaPageAccueil(JButton boutonAnnuler) {
-		boutonAnnuler.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		boutonAnnuler.addActionListener(e -> dispose());
 	}
 
-	public FEN_Panier_Fromages getFEN_Panier_Fromages() {
-		return this.fenPanier;
-	}
-
-	public FEN_Nos_Fromages getFEN_Nos_Fromages() {
-		return this.fenAccueil;
-	}
-
-	public Fromage getFromageDeLaFenetre() {
-		return this.f;
-	}
-	
 	public void displayFromage(Fromage fromage) {
 	    String imagePath = "src/main/resources/images/fromages/hauteur200/" + fromage.getNomImage() + ".jpg";
 	    ImageIcon icon = new ImageIcon(imagePath);
-	    labelImage.setIcon(icon); // Supposons que vous avez un JLabel nommé labelImage pour l'image
+	    labelImage.setIcon(icon);
 	}
 
 }

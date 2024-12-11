@@ -20,12 +20,12 @@ public class TestMiseAJourStocks {
     private List<Fromage> mesFromagesTest = new LinkedList<>();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mesFromagesTest.addAll(mesFromages.subList(0, 5));
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         mesFromagesTest.clear();
     }
 

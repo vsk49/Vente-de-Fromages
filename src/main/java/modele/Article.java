@@ -36,7 +36,7 @@ public class Article {
 
 	@Override
 	public String toString() {
-		if (this.clé.equals("")) {
+		if (this.clé.isEmpty()) {
 			return this.fromage.getDésignation() + ", Prix TTC : "
 			        + this.getPrixTTC() + " €";
 		} else {
@@ -46,7 +46,7 @@ public class Article {
 	}
 
 	public String toStringAvecStock() {
-		return this.toString() + ", Quantité en stock : "
+		return this + ", Quantité en stock : "
 		        + this.quantitéEnStock;
 	}
 

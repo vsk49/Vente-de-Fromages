@@ -134,15 +134,7 @@ public class TestSaisieFromage {
 
 	@Test
 	public void testSaisieFromageEtArticlesPourXPersonnes() {
-		SaisieFromage uneSaisie = new SaisieFromage("Fondue Savoyarde",
-		        "fondue_savoyarde",
-		        "Idéal pour un repas convivial avec vos amis ou en famille. C'est un mélange de parfum, d'onctuosité, et de raffinement pour "
-		                + "cette fondue savoyarde. Allez y piquez vos morceaux de pain dans le caquelon au centre de la table. "
-		                + "La fondue savoyarde est un plat régional de la gastronomie française à base de fromage fondu et de pain, traditionnel des pays de Savoie. "
-		                + "Ce plat populaire, vous envoûtera de part ses multiples arômes.",
-		        TypeVente.POUR_X_PERSONNES, new String[] { "3", "5", "10" },
-		        new float[] { 22.5F, 33.75F, 67.5F });
-		Fromage f = uneSaisie.builderFromage();
+		Fromage f = getFromage();
 		assertEquals("Fondue Savoyarde", f.getDésignation());
 		assertEquals("fondue_savoyarde", f.getNomImage());
 		assertEquals(3, f.nombreArticles());
@@ -152,5 +144,17 @@ public class TestSaisieFromage {
 		assertEquals(33.75F, f.getArticles().get(1).getPrixTTC(), 0F);
 		assertEquals("pour 10 personnes", f.getArticles().get(2).getClé());
 		assertEquals(67.5F, f.getArticles().get(2).getPrixTTC(), 0F);
+	}
+
+	private static Fromage getFromage() {
+		SaisieFromage uneSaisie = new SaisieFromage("Fondue Savoyarde",
+		        "fondue_savoyarde",
+		        "Idéal pour un repas convivial avec vos amis ou en famille. C'est un mélange de parfum, d'onctuosité, et de raffinement pour "
+		                + "cette fondue savoyarde. Allez y piquez vos morceaux de pain dans le caquelon au centre de la table. "
+		                + "La fondue savoyarde est un plat régional de la gastronomie française à base de fromage fondu et de pain, traditionnel des pays de Savoie. "
+		                + "Ce plat populaire, vous envoûtera de part ses multiples arômes.",
+		        TypeVente.POUR_X_PERSONNES, new String[] { "3", "5", "10" },
+		        new float[] { 22.5F, 33.75F, 67.5F });
+        return uneSaisie.builderFromage();
 	}
 }

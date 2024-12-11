@@ -40,14 +40,14 @@ public class TestCalculFacture {
 	private Fromage f5;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.f1 = this.saisieALaCoupe.builderFromage();
 		this.f3 = this.saisieEntierMoitie.builderFromage();
 		this.f5 = this.saisieXPersonnes.builderFromage();
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		this.f1 = null;
 		this.f3 = null;
 		this.f5 = null;
@@ -58,13 +58,13 @@ public class TestCalculFacture {
 	    FEN_Panier_Fromages panier = new FEN_Panier_Fromages(new FEN_Nos_Fromages());
 	    panier.ajouterAuPanier(this.f1.getDésignation() + " - " 
 	    		+ this.f1.getArticles().get(0).getClé(), 1, 20, 20f);
-	    FEN_Facture facture = new FEN_Facture(null, panier);
+	    FEN_Facture facture = new FEN_Facture();
 	    facture.afficherArticles(panier.getTable());
 	    JTable tableFacture = facture.getTableFacture();
-	    assertEquals("Brie de Melun - 250 g", (String)tableFacture.getValueAt(0, 0));
-	    assertEquals("1,00 €", (String)tableFacture.getValueAt(0, 1));
-	    assertEquals("20", (String)tableFacture.getValueAt(0, 2));
-	    assertEquals("20,00 €", (String)tableFacture.getValueAt(0, 3));
+	    assertEquals("Brie de Melun - 250 g", tableFacture.getValueAt(0, 0));
+	    assertEquals("1.00 €", tableFacture.getValueAt(0, 1));
+	    assertEquals("20", tableFacture.getValueAt(0, 2));
+	    assertEquals("20.00 €", tableFacture.getValueAt(0, 3));
 	}
 
 	@Test
@@ -78,18 +78,18 @@ public class TestCalculFacture {
 	    		+ this.f5.getArticles().get(1).getClé(), 2, 15, 30f);
 	    JComboBox<String> comboBoxColis = panier.getComboBoxColis();
 	    comboBoxColis.setSelectedItem("Chronofresh");
-	    FEN_Facture facture = new FEN_Facture(null, panier);
+	    FEN_Facture facture = new FEN_Facture();
 	    facture.afficherArticles(panier.getTable());
 	    facture.afficherPrixTotal(panier.getPrixPanier());
-	    assertEquals("Sous-Total : 65,00€", facture.getSousTotal());
-	    assertEquals("Frais de Livraison : 17,80€", facture.getFraisLivraison());
-	    assertEquals("Total TTC : 82,80€", facture.getTotalTTC());
+	    assertEquals("Sous-Total : 65.00€", facture.getSousTotal());
+	    assertEquals("Frais de Livraison : 17.80€", facture.getFraisLivraison());
+	    assertEquals("Total TTC : 82.80€", facture.getTotalTTC());
 	}
 	
 	@Test
 	public void testCalculPrixPanierVide() {
 	    FEN_Panier_Fromages panier = new FEN_Panier_Fromages(new FEN_Nos_Fromages());
-	    FEN_Facture facture = new FEN_Facture(null, panier);
+	    FEN_Facture facture = new FEN_Facture();
 	    facture.afficherPrixTotal(panier.getPrixPanier());
 	    assertEquals("Sous-Total : 0,00 €", facture.getSousTotal());
 	    assertEquals("Frais de Livraison : 0,00 €", facture.getFraisLivraison());
